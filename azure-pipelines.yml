@@ -35,12 +35,13 @@ stages:
             command: 'build'
             projects: '**/*.sln'
             arguments: '--no-restore --configuration release'
+        - task: CopyFiles@2
+          inputs:
+            Contents: '**'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)'
         - task: PublishBuildArtifacts@1
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
             publishLocation: 'Container'
-        - task: CopyFiles@2
-          inputs:
-            Contents: '**'
-            TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        
