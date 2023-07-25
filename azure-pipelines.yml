@@ -11,22 +11,32 @@ stages:
           vmImage: windows-latest
         steps:
         - task: UseDotNet@2
+          displayName: 'SDK'
           inputs:
             packageType: 'sdk'
             version: '6.0.100'
         - task: NuGetToolInstaller@1
+          displayName: 'NuGet Tool'
           inputs:
             versionSpec: 
         - task: NuGetCommand@2
+          displayName: 'NuGet Restore'
           inputs:
             command: 'restore'
             restoreSolution: '**/*.sln'
         - task: DotNetCoreCLI@2
+          displayName: 'Restore Server project'
           inputs:
             command: 'restore'
             projects: '**/*.sln'
         - task: DotNetCoreCLI@2
+          displayName: 'Build server project'
           inputs:
             command: 'build'
             projects: '**/*.sln'
             arguments: '--no-restore --configuration release'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
