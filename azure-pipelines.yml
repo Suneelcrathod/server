@@ -1,6 +1,7 @@
 
 trigger:
-- master
+# - master
+- server
 variables:
  BuildConfiguration: 'Release'
 stages:
